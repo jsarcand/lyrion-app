@@ -20,19 +20,24 @@ jobs:
           - os: macos-latest
             target: aarch64-apple-darwin
             bundles: dmg
+            rust: stable
           - os: macos-15-intel
             target: x86_64-apple-darwin
             bundles: dmg
+            rust: stable
           - os: windows-latest
             target: x86_64-pc-windows-msvc
             bundles: nsis,msi
+            rust: stable
           - os: ubuntu-22.04
             target: x86_64-unknown-linux-gnu
             bundles: deb,appimage
+            rust: 1.78.0
           - os: ubuntu-22.04-arm
             target: aarch64-unknown-linux-gnu
             bundles: deb
             squeezelite: true
+            rust: 1.78.0
 
     runs-on: ${{ matrix.os }}
 
@@ -49,11 +54,12 @@ jobs:
         with:
           version: 10
 
-      # Tauri 1 / wry 0.24 does not compile on current stable: WebKitGTK trait
-      # methods drop out of scope. 1.77.2 is the last line that still builds it.
+      # Linux stays on 1.78. Current stable drops WebKitGTK trait methods out of
+      # scope in wry 0.24, and 1.78 is the oldest Cargo that reads this lockfile.
       - name: Install Rust
-        uses: dtolnay/rust-toolchain@1.77.2
+        uses: dtolnay/rust-toolchain@master
         with:
+          toolchain: ${{ matrix.rust }}
           targets: ${{ matrix.target }}
 
       - name: macOS bundler tools
