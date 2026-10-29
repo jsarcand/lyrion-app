@@ -49,8 +49,10 @@ jobs:
         with:
           version: 10
 
+      # Tauri 1 / wry 0.24 does not compile on current stable: WebKitGTK trait
+      # methods drop out of scope. 1.77.2 is the last line that still builds it.
       - name: Install Rust
-        uses: dtolnay/rust-toolchain@stable
+        uses: dtolnay/rust-toolchain@1.77.2
         with:
           targets: ${{ matrix.target }}
 

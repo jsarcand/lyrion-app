@@ -1088,20 +1088,27 @@ fn set_traffic_lights_hidden(app: tauri::AppHandle, hidden: bool) {
 }
 
 fn align_traffic_lights(window: &tauri::Window) {
-    if window.label() != "main" {
-        return;
+    #[cfg(target_os = "macos")]
+    {
+        if window.label() != "main" {
+            return;
+        }
+        use objc::runtime::Object;
+        let ns_window: *mut Object = match window.ns_window() {
+            Ok(ptr) => ptr as *mut Object,
+            Err(_) => return,
+        };
+        if ns_window.is_null() {
+            return;
+        }
+        align_traffic_lights_ns(ns_window);
+        darken_webview(ns_window);
+        pin_webview_surface(ns_window, false);
     }
-    use objc::runtime::Object;
-    let ns_window: *mut Object = match window.ns_window() {
-        Ok(ptr) => ptr as *mut Object,
-        Err(_) => return,
-    };
-    if ns_window.is_null() {
-        return;
+    #[cfg(not(target_os = "macos"))]
+    {
+        let _ = window;
     }
-    align_traffic_lights_ns(ns_window);
-    darken_webview(ns_window);
-    pin_webview_surface(ns_window, false);
 }
 
 /// Native Quit uses `terminate:` with a nil target. Catalina's WKWebView, as
