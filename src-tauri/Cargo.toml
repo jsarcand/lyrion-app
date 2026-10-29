@@ -1,8 +1,8 @@
 [package]
 name = "lyrion-minim"
-version = "0.1.0"
-description = "Lyrion Minim. A minimal desktop client for Lyrion."
-authors = ["you"]
+version = "1.0.0-b"
+description = "Lyrion.app. A desktop client for Lyrion Music Server."
+authors = ["JS Arcand"]
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -11,13 +11,24 @@ edition = "2021"
 tauri-build = { version = "1", features = [] }
 
 [dependencies]
-tauri = { version = "1", features = [ "http-all", "fs-read-file", "fs-create-dir", "fs-exists", "fs-write-file", "os-all", "window-set-size", "window-set-position", "window-set-decorations", "window-set-resizable", "process-exit", "shell-sidecar", "path-all", "system-tray", "macos-private-api"] }
+tauri = { version = "1", features = [ "http-all", "fs-read-file", "fs-create-dir", "fs-exists", "fs-write-file", "os-all", "window-set-size", "window-set-position", "window-set-decorations", "window-set-resizable", "window-start-dragging", "window-show", "window-hide", "window-set-focus", "window-set-always-on-top", "global-shortcut-all", "process-exit", "shell-sidecar", "path-all", "system-tray", "macos-private-api"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 tauri-plugin-positioner = { version = "1.0.4", features = ["system-tray"] }
+window-vibrancy = "0.4"
 tokio = { version = "1.24.1", features = ["full"] }
 nom = "7.1.3"
 anyhow = "1.0.71"
+reqwest = { version = "0.11", default-features = false, features = ["rustls-tls", "stream", "json"] }
+hyper = { version = "0.14", features = ["server", "http1", "tcp", "client", "stream"] }
+serde_yaml = "0.9"
+
+[target.'cfg(unix)'.dependencies]
+libc = "0.2"
+
+[target.'cfg(target_os = "macos")'.dependencies]
+objc = "0.2"
+block = "0.1"
 
 [features]
 # This feature is used for production builds or when a dev server is not specified, DO NOT REMOVE!!

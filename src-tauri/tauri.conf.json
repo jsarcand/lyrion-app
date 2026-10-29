@@ -3,12 +3,12 @@
   "build": {
     "beforeDevCommand": "pnpm dev",
     "beforeBuildCommand": "pnpm build",
-    "devPath": "http://localhost:1420",
+    "devPath": "http://127.0.0.1:1420",
     "distDir": "../dist"
   },
   "package": {
-    "productName": "Lyrion Minim",
-    "version": "0.2.8"
+    "productName": "Lyrion",
+    "version": "1.0.0-b"
   },
   "tauri": {
     "allowlist": {
@@ -25,16 +25,7 @@
           {
             "name": "binaries/squeezelite",
             "sidecar": true,
-            "args": [
-              "-n",
-              {
-                "validator": "\\S+"
-              },
-              "-M",
-              {
-                "validator": "\\S+"
-              }
-            ]
+            "args": true
           }
         ]
       },
@@ -55,7 +46,15 @@
         "setResizable": true,
         "setDecorations": true,
         "setPosition": true,
-        "setSize": true
+        "setSize": true,
+        "startDragging": true,
+        "show": true,
+        "hide": true,
+        "setFocus": true,
+        "setAlwaysOnTop": true
+      },
+      "globalShortcut": {
+        "all": true
       },
       "os": {
         "all": true
@@ -63,23 +62,52 @@
       "http": {
         "all": true,
         "scope": [
-          "http://*/Material"
+          "http://*/**",
+          "https://*/**",
+          "http://*/*",
+          "http://*/material",
+          "http://*/material/*",
+          "http://*/Material",
+          "http://*/Material/*",
+          "http://*/jsonrpc.js"
         ]
       }
     },
     "macOSPrivateApi": true,
     "windows": [
       {
-        "title": "lyrion-minim",
+        "label": "main",
+        "title": "Lyrion",
         "width": 440,
         "height": 700,
+        "minWidth": 320,
+        "minHeight": 480,
         "fullscreen": false,
-        "resizable": false,
-        "visible": false,
+        "resizable": true,
+        "visible": true,
         "hiddenTitle": true,
+        "decorations": true,
+        "titleBarStyle": "Overlay",
+        "focus": true,
+        "transparent": false
+      },
+      {
+        "label": "players",
+        "title": "Platines",
+        "width": 360,
+        "height": 220,
+        "minWidth": 360,
+        "maxWidth": 360,
+        "minHeight": 140,
+        "resizable": true,
+        "visible": false,
         "decorations": false,
+        "alwaysOnTop": true,
+        "skipTaskbar": true,
+        "hiddenTitle": true,
         "focus": false,
-        "transparent": true
+        "transparent": true,
+        "fileDropEnabled": false
       }
     ],
     "security": {
@@ -88,10 +116,10 @@
     "bundle": {
       "active": true,
       "targets": "all",
-      "identifier": "com.lyrion-minim.app",
+      "identifier": "org.lyrion.app",
       "category": "Music",
-      "shortDescription": "Lyrion Minim",
-      "longDescription": "Lyrion Minim. A minimal desktop client for Lyrion Music Server.",
+      "shortDescription": "Lyrion — desktop client for Lyrion Music Server",
+      "longDescription": "Lyrion is the turnkey desktop client for Lyrion Music Server: discover or install LMS, play with built-in Squeezelite, and control your library via Material Skin.",
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",
@@ -101,7 +129,10 @@
       ],
       "externalBin": [
         "binaries/squeezelite"
-      ]
+      ],
+      "macOS": {
+        "minimumSystemVersion": "10.13"
+      }
     },
     "systemTray": {
       "iconPath": "icons/icon.png",

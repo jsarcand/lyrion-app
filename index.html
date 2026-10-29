@@ -5,6 +5,24 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lyrion Minim</title>
+    <style>
+      html, body, #app {
+        background: #1c1c1e;
+        margin: 0;
+        height: 100%;
+        overflow: hidden;
+      }
+    </style>
+    <!-- Catalina runs this classic script. It does not run type=module from tauri://. -->
+    <script>
+      (function () {
+        var protocol = location.protocol;
+        var host = location.hostname;
+        if (protocol === "tauri:" || host === "tauri.localhost") {
+          location.replace("http://localhost:14321/");
+        }
+      })();
+    </script>
   </head>
 
   <body>
