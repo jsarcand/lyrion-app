@@ -27,17 +27,17 @@ jobs:
             rust: stable
           - os: windows-latest
             target: x86_64-pc-windows-msvc
-            bundles: nsis,msi
+            bundles: nsis
             rust: stable
           - os: ubuntu-22.04
             target: x86_64-unknown-linux-gnu
             bundles: deb,appimage
-            rust: 1.78.0
+            rust: stable
           - os: ubuntu-22.04-arm
             target: aarch64-unknown-linux-gnu
             bundles: deb
             squeezelite: true
-            rust: 1.78.0
+            rust: stable
 
     runs-on: ${{ matrix.os }}
 
@@ -54,8 +54,8 @@ jobs:
         with:
           version: 10
 
-      # Linux stays on 1.78. Current stable drops WebKitGTK trait methods out of
-      # scope in wry 0.24, and 1.78 is the oldest Cargo that reads this lockfile.
+      # wry 0.24.12 imports SettingsExt. Rust 1.93 and later reject wry 0.24.11.
+      # Stay on current stable. Do not add a repo rust-toolchain.toml.
       - name: Install Rust
         uses: dtolnay/rust-toolchain@master
         with:

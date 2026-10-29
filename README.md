@@ -16,7 +16,7 @@ https://github.com/jsarcand/lyrion-app/releases/tag/v1.0b
 | --- | --- | --- |
 | macOS 10.13 and later | Apple Silicon | DMG |
 | macOS 10.13 and later, including Catalina | Intel | DMG |
-| Windows 10 and 11 | 64-bit Intel or AMD | EXE and MSI |
+| Windows 10 and 11 | 64-bit Intel or AMD | EXE |
 | Linux | x86-64 | deb and AppImage |
 | Linux | ARM64 | deb |
 
@@ -26,7 +26,7 @@ These builds are unsigned. On macOS, if Gatekeeper blocks the app:
 xattr -cr /Applications/Lyrion.app
 ```
 
-Windows on ARM is not in this release. The bundled player is Squeezelite, and this project has no native Windows ARM build of it.
+Windows on ARM is not in this release. The bundled player is Squeezelite, and this project has no native Windows ARM build of it. The Windows package is an NSIS installer. WiX cannot build an MSI for version `1.0.0-b`, because that prerelease marker is a letter.
 
 Linux packages expect ALSA and the usual decoder libraries (FLAC, Vorbis, mpg123, FAAD, MAD) on the system. The deb does not vendor those libraries.
 
@@ -97,7 +97,7 @@ https://github.com/jsarcand/lyrion-app/releases/tag/v1.0b
 | --- | --- | --- |
 | macOS 10.13 et plus récent | Apple Silicon | DMG |
 | macOS 10.13 et plus récent, y compris Catalina | Intel | DMG |
-| Windows 10 et 11 | Intel ou AMD 64 bits | EXE et MSI |
+| Windows 10 et 11 | Intel ou AMD 64 bits | EXE |
 | Linux | x86-64 | deb et AppImage |
 | Linux | ARM64 | deb |
 
@@ -107,7 +107,7 @@ Les binaires ne sont pas signés. Sur macOS, si Gatekeeper bloque l’applicatio
 xattr -cr /Applications/Lyrion.app
 ```
 
-Windows sur ARM n’est pas dans cette version. Le lecteur inclus est Squeezelite, et ce projet n’en a pas de compilation native pour Windows ARM.
+Windows sur ARM n’est pas dans cette version. Le lecteur inclus est Squeezelite, et ce projet n’en a pas de compilation native pour Windows ARM. Le paquet Windows est un installateur NSIS. WiX ne peut pas produire de MSI pour la version `1.0.0-b`, parce que ce marqueur de préversion est une lettre.
 
 Les paquets Linux s’attendent à trouver ALSA et les décodeurs habituels (FLAC, Vorbis, mpg123, FAAD, MAD) sur le système.
 
