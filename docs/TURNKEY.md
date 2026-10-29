@@ -154,7 +154,7 @@ We **do not re-sign** LMS installers. Users install community-signed binaries fr
 
 ## CI skeleton
 
-See `.github/workflows/release.yml`. A tag `v*` builds macOS Apple Silicon, macOS Intel, Windows x64, Linux x64, and Linux ARM64. The bundles are unsigned unless Apple or Authenticode secrets are added later. Windows on ARM is not built: there is no native Squeezelite sidecar for that target.
+See `.github/workflows/release.yml`. A tag `v*` builds macOS Apple Silicon, macOS Intel, Windows x64, Windows ARM64, Linux x64, and Linux ARM64. The bundles are unsigned unless Apple or Authenticode secrets are added later. The Windows ARM64 build leaves out Squeezelite. There is no native Windows ARM sidecar for that player.
 
 ## Out of scope / later
 

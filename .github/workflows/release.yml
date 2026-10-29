@@ -29,6 +29,11 @@ jobs:
             target: x86_64-pc-windows-msvc
             bundles: nsis
             rust: stable
+          - os: windows-11-arm
+            target: aarch64-pc-windows-msvc
+            bundles: nsis
+            rust: stable
+            omit_player: true
           - os: ubuntu-22.04
             target: x86_64-unknown-linux-gnu
             bundles: deb,appimage
@@ -83,6 +88,22 @@ jobs:
       - name: Install frontend dependencies
         run: pnpm install --frozen-lockfile
 
+      # Windows on ARM has no Squeezelite sidecar. Drop the external binary so
+      # the bundler does not look for one. The app still controls other players.
+      - name: Leave out the bundled player
+        if: matrix.omit_player
+        shell: bash
+        run: |
+          node <<'EOF'
+          const fs = require("fs");
+          const path = "src-tauri/tauri.conf.json";
+          const cfg = JSON.parse(fs.readFileSync(path, "utf8"));
+          cfg.tauri.bundle.externalBin = [];
+          cfg.tauri.allowlist.shell.sidecar = false;
+          cfg.tauri.allowlist.shell.scope = [];
+          fs.writeFileSync(path, JSON.stringify(cfg, null, 2) + "\n");
+          EOF
+
       - name: Tauri build
         uses: tauri-apps/tauri-action@v0
         env:
@@ -95,10 +116,10 @@ jobs:
             Lyrion.app 1.0b, unsigned builds.
 
             - macOS Apple Silicon and macOS Intel (10.13 or later, including Catalina)
-            - Windows 10 and 11, 64-bit Intel or AMD
+            - Windows 10 and 11, 64-bit Intel or AMD, and 64-bit ARM
             - Linux x86-64 (.deb and AppImage) and Linux ARM64 (.deb)
 
-            Windows on ARM is not in this release. The bundled player is Squeezelite (GPLv3).
+            The Windows on ARM build does not include Squeezelite. Other builds bundle it (GPLv3).
             On macOS, if Gatekeeper blocks the app: xattr -cr /Applications/Lyrion.app
           releaseDraft: false
           prerelease: true

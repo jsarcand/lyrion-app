@@ -2386,7 +2386,10 @@ let client = {
       state.value.client.running = true;
       if (!silent) messager.show('Squeezelite process started ' + pid);
     } catch (err) {
-      messager.show('Unable to start Squeezelite ' + err);
+      const missing = String(err).toLowerCase().includes('not found');
+      if (!silent || !missing) {
+        messager.show('Unable to start Squeezelite ' + err);
+      }
       console.log(err);
       state.value.client.running = false;
     }

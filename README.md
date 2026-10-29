@@ -17,6 +17,7 @@ https://github.com/jsarcand/lyrion-app/releases/tag/v1.0b
 | macOS 10.13 and later | Apple Silicon | DMG |
 | macOS 10.13 and later, including Catalina | Intel | DMG |
 | Windows 10 and 11 | 64-bit Intel or AMD | EXE |
+| Windows 10 and 11 | ARM64 | EXE, no bundled player |
 | Linux | x86-64 | deb and AppImage |
 | Linux | ARM64 | deb |
 
@@ -26,7 +27,7 @@ These builds are unsigned. On macOS, if Gatekeeper blocks the app:
 xattr -cr /Applications/Lyrion.app
 ```
 
-Windows on ARM is not in this release. The bundled player is Squeezelite, and this project has no native Windows ARM build of it. The Windows package is an NSIS installer. WiX cannot build an MSI for version `1.0.0-b`, because that prerelease marker is a letter.
+The Windows on ARM package does not include Squeezelite. It controls players that are already on the network. Other packages bundle Squeezelite. The Windows package is an NSIS installer. WiX cannot build an MSI for version `1.0.0-b`, because that prerelease marker is a letter.
 
 Linux packages expect ALSA and the usual decoder libraries (FLAC, Vorbis, mpg123, FAAD, MAD) on the system. The deb does not vendor those libraries.
 
@@ -34,7 +35,7 @@ Linux packages expect ALSA and the usual decoder libraries (FLAC, Vorbis, mpg123
 
 - Discover LMS on the local network (or prefer a server already on this machine)
 - **Install LMS locally** from official packages ([getting started](https://lyrion.org/getting-started/), [macOS](https://lyrion.org/getting-started/mac-install/))
-- Built-in Squeezelite player (+ soft preview player)
+- Built-in Squeezelite player, except on Windows on ARM (+ soft preview player)
 - Material Skin UI in a native shell (menubar / floating window)
 
 See **[docs/TURNKEY.md](docs/TURNKEY.md)** for architecture, install flows, signing, and release CI.
@@ -45,8 +46,8 @@ See **[docs/TURNKEY.md](docs/TURNKEY.md)** for architecture, install flows, sign
 | --- | --- | --- |
 | macOS 10.13 and later | Apple Silicon, Intel | Built |
 | Windows 10 and 11 | x64 | Built |
+| Windows 10 and 11 | ARM64 | Built, no bundled player |
 | Linux | x86-64, ARM64 | Built |
-| Windows on ARM | ARM64 | Not in 1.0b |
 
 ## Development
 
@@ -98,6 +99,7 @@ https://github.com/jsarcand/lyrion-app/releases/tag/v1.0b
 | macOS 10.13 et plus récent | Apple Silicon | DMG |
 | macOS 10.13 et plus récent, y compris Catalina | Intel | DMG |
 | Windows 10 et 11 | Intel ou AMD 64 bits | EXE |
+| Windows 10 et 11 | ARM64 | EXE, sans lecteur inclus |
 | Linux | x86-64 | deb et AppImage |
 | Linux | ARM64 | deb |
 
@@ -107,7 +109,7 @@ Les binaires ne sont pas signés. Sur macOS, si Gatekeeper bloque l’applicatio
 xattr -cr /Applications/Lyrion.app
 ```
 
-Windows sur ARM n’est pas dans cette version. Le lecteur inclus est Squeezelite, et ce projet n’en a pas de compilation native pour Windows ARM. Le paquet Windows est un installateur NSIS. WiX ne peut pas produire de MSI pour la version `1.0.0-b`, parce que ce marqueur de préversion est une lettre.
+Le paquet Windows sur ARM n’inclut pas Squeezelite. Il pilote les platines déjà présentes sur le réseau. Les autres paquets incluent Squeezelite. Le paquet Windows est un installateur NSIS. WiX ne peut pas produire de MSI pour la version `1.0.0-b`, parce que ce marqueur de préversion est une lettre.
 
 Les paquets Linux s’attendent à trouver ALSA et les décodeurs habituels (FLAC, Vorbis, mpg123, FAAD, MAD) sur le système.
 
@@ -115,7 +117,7 @@ Les paquets Linux s’attendent à trouver ALSA et les décodeurs habituels (FLA
 
 - Trouve un serveur Lyrion sur le réseau local, ou un serveur déjà présent sur la machine
 - Peut installer LMS à partir des paquets officiels
-- Lecteur Squeezelite intégré
+- Lecteur Squeezelite intégré, sauf sur Windows ARM
 - Interface Material dans une fenêtre native
 
 Le détail d’architecture, d’installation et de signature est dans [docs/TURNKEY.md](docs/TURNKEY.md).
