@@ -104,6 +104,36 @@ jobs:
           fs.writeFileSync(path, JSON.stringify(cfg, null, 2) + "\n");
           EOF
 
+      # The Windows ARM Tauri CLI is built without a TLS backend, so its own
+      # NSIS download fails. PowerShell can fetch the same files. Tauri 1.6
+      # skips the download when this cache is already complete.
+      - name: Cache NSIS for the Windows ARM bundler
+        if: matrix.os == 'windows-11-arm'
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $dest = Join-Path $env:LOCALAPPDATA 'tauri'
+          New-Item -ItemType Directory -Force -Path $dest | Out-Null
+          $zip = Join-Path $env:RUNNER_TEMP 'nsis-3.zip'
+          Invoke-WebRequest -Uri 'https://github.com/tauri-apps/binary-releases/releases/download/nsis-3/nsis-3.zip' -OutFile $zip
+          $zipHash = (Get-FileHash -Algorithm SHA1 $zip).Hash
+          if ($zipHash -ne '057E83C7D82462EC394AF76C87D06733605543D4') { throw "unexpected NSIS zip hash $zipHash" }
+          Expand-Archive -Path $zip -DestinationPath $dest -Force
+          $unpacked = Join-Path $dest 'nsis-3.08'
+          if (-not (Test-Path $unpacked)) {
+            Get-ChildItem $dest | ForEach-Object { $_.FullName }
+            throw 'nsis-3.zip did not contain nsis-3.08'
+          }
+          $nsis = Join-Path $dest 'NSIS'
+          if (Test-Path $nsis) { Remove-Item -Recurse -Force $nsis }
+          Rename-Item $unpacked 'NSIS'
+          $pluginDir = Join-Path $nsis 'Plugins\x86-unicode'
+          New-Item -ItemType Directory -Force -Path $pluginDir | Out-Null
+          $dll = Join-Path $pluginDir 'nsis_tauri_utils.dll'
+          Invoke-WebRequest -Uri 'https://github.com/tauri-apps/nsis-tauri-utils/releases/download/nsis_tauri_utils-v0.4.1/nsis_tauri_utils.dll' -OutFile $dll
+          $dllHash = (Get-FileHash -Algorithm SHA1 $dll).Hash
+          if ($dllHash -ne 'F99A50209A345185A84D34D0E5F66D04C75FF52F') { throw "unexpected NSIS plugin hash $dllHash" }
+
       - name: Tauri build
         uses: tauri-apps/tauri-action@v0
         env:
